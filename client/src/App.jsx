@@ -1,11 +1,28 @@
 import "./App.css";
-import ChatComponent from "./chats";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./Pages/Login";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Home from "./Pages/Home";
+// import ChatComponent from "./chats";
+import Signup from "./Pages/Signup";
+import Logout from "./Pages/Logout";
+import GettingStarted from "./Pages/GettingStarted";
+import Layout from "./Components/Layout";
 
 function App() {
   return (
-    <>
-      <ChatComponent />
-    </>
+    // <ChatComponent />
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<GettingStarted />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/home" element={<Home />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 

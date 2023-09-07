@@ -7,7 +7,7 @@ function ChatComponent() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    console.log("Component mounted, setting up socket connection");
+    console.log("jhf");
     socket = io.connect("http://127.0.0.1:5555");
 
     socket.on("message", (message) => {

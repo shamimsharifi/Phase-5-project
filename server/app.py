@@ -301,10 +301,10 @@ class Login(Resource):
     def post(self):
         data = request.get_json()
         username = data['username']
-        password = data['password']
+        password_hash = data['password']
         user = User.query.filter(User.username == username).first()
         if user:
-            if user.authenticate(password):
+            if user.authenticate(password_hash):
                 session['user_id'] = user.id
                 return user.to_dict(), 200
         return {'error': 'Unauthorized'}, 401
