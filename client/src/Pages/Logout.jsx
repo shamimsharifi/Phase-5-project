@@ -42,7 +42,7 @@ export default function Logout() {
             <Form>
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
                 onClick={handleLogout}
                 className="m-1 "
               >

@@ -102,12 +102,11 @@ function Login() {
                   style={{ marginLeft: "5px" }}
                   className="btn btn-secondary"
                   variant="secondary"
-                  to="signup"
+                  to="/signup"
                   activeClassName="active"
                 >
                   Signup
                 </Link>
-                {/* ========== HAVE SIGNUP FORM RENDER ON CLICK. ALSO HAVE OPPORTUNITY TO REGISTER A DOG UPON SIGNUP  */}
               </Form>
             </div>
           </Col>

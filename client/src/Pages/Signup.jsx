@@ -34,6 +34,8 @@ export default function Signup() {
       user_image: image,
     };
 
+    console.log(signObj);
+
     fetch("/api/users", {
       method: "POST",
       headers: {

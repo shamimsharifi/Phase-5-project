@@ -1,0 +1,10 @@
+body {
+  padding-top: 90px;
+}
+
+.bg-body-tertiary {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}

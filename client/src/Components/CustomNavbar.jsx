@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 
 function CustomNavbar() {
-  const { user, deleteUser } = useUserStore(); // Assuming the store returns a user object when logged in
+  const { user, deleteUser } = useUserStore();
   const navigate = useNavigate();
 
   const handleLogout = (e) => {
@@ -34,22 +34,60 @@ function CustomNavbar() {
   };
 
   if (!user) {
-    return null; // or return a different navbar for non-logged-in users
+    return null;
   }
 
   return (
-    <Navbar bg="dark" variant="dark">
-      <Navbar.Brand href="#home">BrandName</Navbar.Brand>
-      <Nav className="mr-auto">
-        <Nav.Link as={Link} to="/home">
-          Home
-        </Nav.Link>
-        {/* Additional navbar items here */}
-      </Nav>
-      <Button variant="outline-light" onClick={handleLogout}>
-        Logout
-      </Button>
-    </Navbar>
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        // width: "100vw",
+        width: "100%",
+      }}
+    >
+      <Navbar
+        // bg="dark"
+        // variant="dark"
+        // style={{ width: "100vw", height: "10vh" }}
+        // className="justify-content-between"
+
+        bg="dark"
+        expand="lg"
+        className="bg-body-tertiary"
+      >
+        <Navbar.Brand
+          href="#home"
+          style={{ fontSize: "35px", marginLeft: "20px" }}
+        >
+          BrandName
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav
+            className="me-auto"
+            style={{
+              fontSize: "20px",
+              padding: "10px",
+            }}
+          >
+            <Nav.Link as={Link} to="/home">
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/chatcomponent">
+              Chats
+            </Nav.Link>
+            <Nav.Link as={Link} to="/profile">
+              Your Profile
+            </Nav.Link>
+          </Nav>
+          <Button variant="outline-light" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Navbar.Collapse>
+      </Navbar>
+    </div>
   );
 }
 

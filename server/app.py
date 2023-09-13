@@ -32,6 +32,7 @@ class Users(Resource):
             new_user = User(
                 username =request_obj["username"],
                 email =request_obj["email"],
+                profile_pic = request_obj["user_image"]
                 # _password_hash =request_obj["_password_hash"],
             )
             new_user.password_hash = request_obj["_password_hash"]
@@ -89,6 +90,25 @@ class UsersById(Resource):
             return response_dict, 200
 api.add_resource(UsersById, '/users/<int:id>')
 
+class UserProfile(Resource):
+    def get(self, user_id):
+        user = User.query.filter_by(id=user_id).first()
+        if user:
+            listings = [l.to_dict() for l in Listing.query.filter_by(user_id=user_id).all()]
+            response_obj = {
+                "user_details": user.to_dict(),
+                "user_listings": listings
+            }
+            return make_response(response_obj, 200)
+        else:
+            response_dict = {
+                "error": "User not found"
+            }
+            return make_response(response_dict, 404)
+
+api.add_resource(UserProfile, '/user-profile/<int:user_id>')
+
+
 
 class Listings(Resource):
     def get(self):
@@ -98,17 +118,17 @@ class Listings(Resource):
         request_obj = request.get_json()
         print(request_obj)
         try:
-            created_at_str = request_obj["created_at"]
-            created_at_datetime = datetime.strptime(created_at_str, '%Y-%m-%d %H:%M:%S')
+            #created_at_str = request_obj["created_at"]
+            #created_at_datetime = datetime.strptime(created_at_str, '%Y-%m-%d %H:%M:%S')
             new_listing = Listing(
                 category =request_obj["category"],
                 description =request_obj["description"],
                 image_url =request_obj["image_url"],
-                created_at =created_at_datetime,
+                #created_at =created_at_datetime,
                 location =request_obj["location"],
                 price =request_obj["price"],
                 title =request_obj["title"],
-                user_id =request_obj["user_id"]
+                user_id =session['user_id']
                  
                 
             )

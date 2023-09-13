@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
+import useUserStore from "./userStore";
 
 let socket;
-
 function ChatComponent() {
+  const { user, currentChat } = useUserStore();
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    console.log("jhf");
     socket = io.connect("http://127.0.0.1:5555");
 
     socket.on("message", (message) => {
@@ -20,8 +20,10 @@ function ChatComponent() {
   }, []);
 
   const sendMessage = (content) => {
-    const data = { chat_id: 1, sender_id: 1, content };
-    socket.emit("message", data);
+    if (currentChat) {
+      const data = { chat_id: currentChat.id, sender_id: user.id, content };
+      socket.emit("message", data);
+    }
   };
 
   return (
