@@ -24,7 +24,6 @@ function App() {
           <Route path="/chatcomponent" element={<ChatComponent />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/listing/:id" element={<ListingDetail />} />{" "}
-          {/* Added new route for listing detail page */}
         </Routes>
       </Layout>
     </Router>

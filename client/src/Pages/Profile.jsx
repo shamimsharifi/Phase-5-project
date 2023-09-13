@@ -7,8 +7,6 @@ function MainPage() {
   return (
     <div>
       <ProfilePage />
-      <EditProfile />
-      <PostListing />
     </div>
   );
 }
