@@ -8,12 +8,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EditProfile from "../Components/EditProfile";
 import PostListing from "./PostListing";
+import Button from "react-bootstrap/esm/Button";
 
 function ProfilePage() {
   const { user } = useUserStore();
   const [userData, setUserData] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  console.log(userProfile);
 
   useEffect(() => {
     fetch("/api/check_session")
@@ -31,6 +31,16 @@ function ProfilePage() {
         .catch((error) => console.error("Error fetching user profile:", error));
     }
   }, [user]);
+
+  const handleDelete = (id) => {
+    fetch(`/api/listings/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    });
+  };
 
   if (!user || !userProfile || !userData) {
     return <div>Loading...</div>;
@@ -74,6 +84,12 @@ function ProfilePage() {
                     Posted on:{" "}
                     {new Date(listing.created_at).toLocaleDateString()}
                   </small>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(listing.id)}
+                  >
+                    Delete
+                  </Button>
                 </Card.Footer>
               </Card>
             </Col>

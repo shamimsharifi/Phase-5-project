@@ -4,12 +4,39 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
+import useUserStore from "../userStore";
 
 export default function ListingDetail() {
   const { id } = useParams();
   const [listing, setListing] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const setCurrentChat = useUserStore((state) => state.setCurrentChat);
+  const { user } = useUserStore();
+  // console.log(user);
+  const handleChatButtonClick = () => {
+    fetch("/api/chats", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        user_id_1: user.id,
+        user_id_2: listing.user_id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCurrentChat({
+          id: data.id,
+          recipient_id: listing.user_id,
+          sender_id: user.id,
+        });
+        navigate("/chatcomponent");
+      });
+  };
 
   useEffect(() => {
     fetch(`/api/listings/${id}`)
@@ -48,9 +75,7 @@ export default function ListingDetail() {
           <p>{listing.category}</p>
           <p>{listing.location}</p>
           <p>{listing.created_at}</p>
-          <Button onClick={() => navigate("/chatcomponent")}>
-            Chat with owner
-          </Button>
+          <Button onClick={handleChatButtonClick}>Chat with owner</Button>
         </Col>
       </Row>
     </Container>

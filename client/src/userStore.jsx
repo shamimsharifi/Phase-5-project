@@ -3,6 +3,7 @@ import { devtools, persist } from "zustand/middleware";
 
 const userStore = (set) => ({
   user: {},
+  currentChat: null,
   updateUser: (newUser) =>
     set(() => ({
       user: newUser,
@@ -10,6 +11,10 @@ const userStore = (set) => ({
   deleteUser: () =>
     set(() => ({
       user: null,
+    })),
+  setCurrentChat: (chat) =>
+    set(() => ({
+      currentChat: chat,
     })),
 });
 

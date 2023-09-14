@@ -14,10 +14,10 @@ function EditProfile() {
   console.log(user);
 
   const [formData, setFormData] = useState({
-    username: "",
+    username: user.username || "",
     profile_pic: "",
     _password_hash: "",
-    email: "",
+    email: user.email || "",
   });
 
   const handleChange = (e) => {
@@ -44,11 +44,7 @@ function EditProfile() {
 
   return (
     <div>
-      <Button
-        variant="dark"
-        onClick={handleShow}
-        style={{ marginLeft: "170px" }}
-      >
+      <Button variant="dark" onClick={handleShow}>
         Edit Profile
       </Button>
 
@@ -65,7 +61,7 @@ function EditProfile() {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                placeholder="Username"
+                placeholder={formData.username || "Username"}
               />
             </Form.Group>
 
@@ -98,7 +94,7 @@ function EditProfile() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="Email"
+                placeholder={formData.email || "Email"}
               />
             </Form.Group>
 

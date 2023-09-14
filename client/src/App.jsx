@@ -8,7 +8,7 @@ import Signup from "./Pages/Signup";
 import Logout from "./Pages/Logout";
 import GettingStarted from "./Pages/GettingStarted";
 import Layout from "./Components/Layout";
-import Profile from "./Pages/Profile";
+import ProfilePage from "./Components/ProfilePage";
 import ListingDetail from "./Components/ListingDetails";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/home" element={<Home />} />
           <Route path="/chatcomponent" element={<ChatComponent />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/listing/:id" element={<ListingDetail />} />{" "}
         </Routes>
       </Layout>

@@ -317,6 +317,21 @@ class MessagesById(Resource):
             return response_dict, 200
 api.add_resource(MessagesById, '/messages/<int:id>')
 
+class MessagesByUserId(Resource):
+    def get(self, user_id):
+        response_objs = Message.query.filter_by(sender_id=user_id).all()
+        if response_objs:
+            response_data = [obj.to_dict() for obj in response_objs]
+            return make_response({"messages": response_data}, 200)
+        else:
+            response_dict = {
+                "error": "No messages found for this user"
+            }
+            return make_response(response_dict, 404)
+
+
+api.add_resource(MessagesByUserId, '/messages/user/<int:user_id>')
+
 class Login(Resource):
     def post(self):
         data = request.get_json()

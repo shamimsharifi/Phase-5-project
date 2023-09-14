@@ -32,7 +32,7 @@ class User(db.Model, SerializerMixin):
 
     @password_hash.setter
     def password_hash(self, password):
-        # utf-8 encoding and decoding is required in python 3
+        
         password_hash = bcrypt.generate_password_hash(
             password.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
@@ -87,5 +87,5 @@ class Message(db.Model, SerializerMixin):
     sender_id = db.Column(db.Integer, db.ForeignKey('users-table.id'))
     sender = relationship('User', back_populates='sent_messages')
 #Serializing_RULES======================   
-    serialize_rules = ('-chats_field', '-sender')
+    serialize_rules = ('-chats_field.user_field', '-sender')
 

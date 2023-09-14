@@ -42,7 +42,7 @@ function PostListing() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="dark" onClick={handleShow} style={{ marginTop: "10px" }}>
         Showcase your Items
       </Button>
 
