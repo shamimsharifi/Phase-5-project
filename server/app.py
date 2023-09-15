@@ -332,6 +332,9 @@ class MessagesByUserId(Resource):
 
 api.add_resource(MessagesByUserId, '/messages/user/<int:user_id>')
 
+
+
+
 class Login(Resource):
     def post(self):
         data = request.get_json()
@@ -367,6 +370,7 @@ api.add_resource(Logout, '/logout')
 @socketio.on('message')
 def handle_message(data):
     print('Received message:', data)
+    
 
 
     new_message = Message(content=data['content'], chat_id=data['chat_id'], sender_id=data['sender_id'])

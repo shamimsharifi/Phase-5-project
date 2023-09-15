@@ -2,18 +2,19 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import UploadWidget from "./UploadWidgets";
 
 function PostListing() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [image, setImage] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
     category: "",
     description: "",
-    image_url: "",
     price: 0,
     location: "",
   });
@@ -33,11 +34,19 @@ function PostListing() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        title: formData.title,
+        category: formData.category,
+        description: formData.description,
+        price: formData.price,
+        location: formData.location,
+        image_url: image,
+      }),
     })
       .then((response) => response.json())
-      .then((data) => console.log("Success:", data));
-    handleClose().catch((error) => console.error("Error:", error));
+      .then((data) => console.log("Success:", data))
+      .catch((error) => console.error("Error:", error));
+    handleClose();
   };
 
   return (
@@ -109,14 +118,15 @@ function PostListing() {
             </Form.Group>
 
             <Form.Group controlId="formImageUrl">
-              <Form.Label>Image URL</Form.Label>
+              <UploadWidget setImage={setImage} />
+              {/* <Form.Label>Image URL</Form.Label>
               <Form.Control
                 type="text"
                 name="image_url"
                 value={formData.image_url}
                 onChange={handleChange}
                 placeholder="Image URL"
-              />
+              /> */}
             </Form.Group>
 
             <Button variant="primary" type="submit">

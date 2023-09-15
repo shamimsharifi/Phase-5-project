@@ -72,7 +72,7 @@ class Chat(db.Model, SerializerMixin):
     users_field = relationship('User',primaryjoin="or_(Chat.user_id_1==User.id, Chat.user_id_2==User.id)",  back_populates='chats_field')
     messages_field = relationship('Message', back_populates='chats_field')
 #Serializing_RULES======================
-    serialize_rules = ('-users_field', '-messages_field')
+    serialize_rules = ('-users_field', '-messages_field.chats_field')
 
 
 class Message(db.Model, SerializerMixin):
@@ -87,5 +87,5 @@ class Message(db.Model, SerializerMixin):
     sender_id = db.Column(db.Integer, db.ForeignKey('users-table.id'))
     sender = relationship('User', back_populates='sent_messages')
 #Serializing_RULES======================   
-    serialize_rules = ('-chats_field.user_field', '-sender')
+    serialize_rules = ('-chats_field.user_field', '-sender.sent_messages')
 
