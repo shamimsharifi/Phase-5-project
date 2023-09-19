@@ -4,18 +4,15 @@ import { devtools, persist } from "zustand/middleware";
 const userStore = (set) => ({
   user: {},
   currentChat: null,
-  updateUser: (newUser) =>
-    set(() => ({
-      user: newUser,
-    })),
-  deleteUser: () =>
-    set(() => ({
-      user: null,
-    })),
-  setCurrentChat: (chat) =>
-    set(() => ({
-      currentChat: chat,
-    })),
+  chatBoxes: [],
+  updateUser: (newUser) => set(() => ({ user: newUser })),
+  deleteUser: () => set(() => ({ user: null })),
+  setCurrentChat: (chat) => set(() => ({ currentChat: chat })),
+  setChatBoxes: (chatBoxes) => set(() => ({ chatBoxes })),
+  messages: [],
+  setMessages: (messages) => set({ messages }),
+  addMessage: (message) =>
+    set((state) => ({ messages: [...state.messages, message] })),
 });
 
 const useUserStore = create(
