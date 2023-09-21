@@ -519,18 +519,18 @@ class Logout(Resource):
         return {'message':'204: No Content'}
 api.add_resource(Logout, '/logout')
 
-@socketio.on('message')
-def handle_message(data):
-    print('Received message:', data)
+# @socketio.on('message')
+# def handle_message(data):
+#     print('Received message:', data)
 
 
 
-    new_message = Message(content=data['content'], chat_id=data['chat_id'], sender_id=data['sender_id'])
+#     new_message = Message(content=data['content'], chat_id=data['chat_id'], sender_id=data['sender_id'])
 
-    db.session.add(new_message)
-    db.session.commit()
+#     db.session.add(new_message)
+#     db.session.commit()
 
-    socketio.emit('message', data)
+#     socketio.emit('message', data)
 
 @socketio.on('new_message')
 def handle_new_message(data):

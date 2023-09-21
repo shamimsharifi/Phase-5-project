@@ -24,20 +24,22 @@ function ChatBoxListComponent() {
 
   function selectChatBox(chatBox) {
     setCurrentChat(chatBox);
-
     setMessages(chatBox.messages_field);
   }
 
   return (
-    <div>
-      <h2>Chat Boxes</h2>
-      <ul>
-        {chatBoxes.map((chatBox) => (
-          <li key={chatBox.id} onClick={() => selectChatBox(chatBox)}>
-            Chat between User {chatBox.user_id_1} and User {chatBox.user_id_2}
-          </li>
-        ))}
-      </ul>
+    <div className="list-group mb-3" style={{ marginTop: "170px" }}>
+      <h3 style={{ marginLeft: "30px" }}>Inbox</h3>
+      {chatBoxes.map((chatBox) => (
+        <a
+          href="#"
+          className="list-group-item list-group-item-action chat-box-item"
+          key={chatBox.id}
+          onClick={() => selectChatBox(chatBox)}
+        >
+          Chat between User {chatBox.user_id_1} and User {chatBox.user_id_2}
+        </a>
+      ))}
     </div>
   );
 }

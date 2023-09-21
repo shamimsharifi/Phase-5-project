@@ -12,8 +12,6 @@ function ChatsComponent() {
 
   let socket;
 
-  console.log(messages);
-
   useEffect(() => {
     socket = io("http://localhost:5555");
 
@@ -31,25 +29,64 @@ function ChatsComponent() {
   }
 
   return (
-    <div>
-      <h2>
+    <div className="card" style={{ marginTop: "200px" }}>
+      <div className="card-header">
         Chat between User {currentChat.user_id_1} and User{" "}
         {currentChat.user_id_2}
-      </h2>
-      <div>
+      </div>
+      <div
+        className="chat-messages-container"
+        style={{
+          maxHeight: "500px",
+          overflowY: "auto",
+          marginLeft: "20px",
+          minHeight: "500px",
+        }}
+      >
         {messages.map((message, index) => (
-          <div key={index}>{message.content}</div>
+          <div
+            key={index}
+            className={`d-flex mb-2 ${
+              message.sender_id === user.id
+                ? "justify-content-end"
+                : "justify-content-start"
+            }`}
+          >
+            <div
+              className={`message-content p-2 rounded ${
+                message.sender_id === user.id
+                  ? "bg-primary text-white"
+                  : "bg-light"
+              }`}
+              style={{ marginRight: "20px" }}
+            >
+              <strong>{message.username}</strong> {message.content}
+            </div>
+          </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-      />
-      <button onClick={handleSendMessage}>Send</button>
+      <div className="input-group mt-2">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Type a message"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
+        />
+        {/* <div className="input-group-append">
+          <button className="btn btn-primary" onClick={handleSendMessage}>
+            Send
+          </button>
+        </div> */}
+      </div>
     </div>
   );
-
   function handleSendMessage() {
     if (newMessage.trim() === "") {
       return;
@@ -64,8 +101,10 @@ function ChatsComponent() {
     axios
       .post("http://localhost:5555/messages/send", messageData)
       .then((response) => {
-        addMessage(response.data.message); // Use addMessage here
+        addMessage(response.data.message);
         setNewMessage("");
+
+        socket.emit("send_message", response.data.message);
       })
       .catch((error) => {
         console.error("Error sending message:", error);
@@ -74,70 +113,3 @@ function ChatsComponent() {
 }
 
 export default ChatsComponent;
-
-// import React, { useState } from "react";
-// import useUserStore from "../userStore";
-// import axios from "axios";
-
-// function ChatsComponent() {
-//   const currentChat = useUserStore((state) => state.currentChat);
-//   const user = useUserStore((state) => state.user);
-//   const [newMessage, setNewMessage] = useState("");
-//   const [messages, setMessages] = useState([]);
-
-//   console.log(currentChat);
-
-//   function handleSendMessage() {
-//     if (newMessage.trim() === "") {
-//       return;
-//     }
-
-//     const loggedInUserId = user.id;
-//     let sender_id =
-//       currentChat.user_id_1 === loggedInUserId
-//         ? currentChat.user_id_1
-//         : currentChat.user_id_2;
-
-//     const messageData = {
-//       chat_id: currentChat.id,
-//       content: newMessage,
-//       sender_id: sender_id,
-//     };
-
-//     axios
-//       .post("http://localhost:5555/messages/send", messageData)
-//       .then((response) => {
-//         setMessages((prevMessages) => [...prevMessages, response.data.message]);
-//         setNewMessage("");
-//       })
-//       .catch((error) => {
-//         console.error("Error sending message:", error);
-//       });
-//   }
-
-//   if (!currentChat) {
-//     return <div>Select a chat to start messaging</div>;
-//   }
-
-//   return (
-//     <div>
-//       <h2>
-//         Chat between User {currentChat.user_id_1} and User{" "}
-//         {currentChat.user_id_2}
-//       </h2>
-//       <div>
-//         {messages.map((message, index) => (
-//           <div key={index}>{message.content}</div>
-//         ))}
-//       </div>
-//       <input
-//         type="text"
-//         value={newMessage}
-//         onChange={(e) => setNewMessage(e.target.value)}
-//       />
-//       <button onClick={handleSendMessage}>Send</button>
-//     </div>
-//   );
-// }
-
-// export default ChatsComponent;
