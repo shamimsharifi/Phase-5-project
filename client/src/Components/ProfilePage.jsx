@@ -66,60 +66,80 @@ function ProfilePage() {
       return { ...prevUserProfile, user_listings: updatedListings };
     });
   };
+  const backgroundStyle = {
+    backgroundImage:
+      "linear-gradient(rgba(50, 50, 50, 0.8), rgba(255, 255, 255, 0.8)), url(https://t4.ftcdn.net/jpg/03/65/86/37/240_F_365863785_GPd2tXRRDis66W8NTGYmBt7Bhxfcb09h.jpg)",
+    backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed",
+    minHeight: "100vh",
+    padding: "150px",
+    backgroundSize: "cover",
+  };
 
   return (
-    <div className="container mt-5">
-      <div className="d-flex flex-column align-items-center mb-4">
-        <Image
-          style={{ width: "400px" }}
-          src={user.profile_pic}
-          alt="Profile Pic"
-          roundedCircle
-        />
-        <h1 style={{ marginTop: "20px", fontSize: "50px" }}>{user.username}</h1>
-        <EditProfile />
-        <PostListing />
-      </div>
-      <h3 className="mb-4">User Listings:</h3>
-      {userProfile?.user_listings?.length > 0 ? (
-        <Row>
-          {userProfile.user_listings.map((listing) => (
-            <Col md={4} key={listing.id} className="mb-4">
-              <Card>
-                <Card.Img
-                  variant="top"
-                  src={listing.image_url}
-                  style={{ height: "200px", width: "100%", objectFit: "cover" }}
-                />
+    <div style={backgroundStyle}>
+      <div className="container mt-5">
+        <div className="d-flex flex-column align-items-center mb-4">
+          <Image
+            style={{ width: "400px" }}
+            src={user.profile_pic}
+            alt="Profile Pic"
+            roundedCircle
+          />
+          <h1 style={{ marginTop: "20px", fontSize: "50px" }}>
+            {user.username}
+          </h1>
+          <EditProfile />
+          <PostListing />
+        </div>
+        <h3 className="mb-4">User Listings:</h3>
+        {userProfile?.user_listings?.length > 0 ? (
+          <Row>
+            {userProfile.user_listings.map((listing) => (
+              <Col md={4} key={listing.id} className="mb-4">
+                <Card>
+                  <Card.Img
+                    variant="top"
+                    src={listing.image_url}
+                    style={{
+                      height: "200px",
+                      width: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
 
-                <Card.Body>
-                  <Card.Title>{listing.title}</Card.Title>
-                  <Card.Text>{listing.description}</Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <small className="text-muted">
-                    ${listing.price} - {listing.category}
-                  </small>
-                  <br />
-                  <small className="text-muted">
-                    Posted on:{" "}
-                    {new Date(listing.created_at).toLocaleDateString()}
-                  </small>
-                  <Button
-                    variant="danger"
-                    onClick={() => handleDelete(listing.id)}
-                  >
-                    Delete
-                  </Button>
-                  <EditListing id={listing.id} onUpdate={handleUpdateListing} />
-                </Card.Footer>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      ) : (
-        <p>No listings available</p>
-      )}
+                  <Card.Body>
+                    <Card.Title>{listing.title}</Card.Title>
+                    <Card.Text>{listing.description}</Card.Text>
+                  </Card.Body>
+                  <Card.Footer>
+                    <small className="text-muted">
+                      ${listing.price} - {listing.category}
+                    </small>
+                    <br />
+                    <small className="text-muted">
+                      Posted on:{" "}
+                      {new Date(listing.created_at).toLocaleDateString()}
+                    </small>
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(listing.id)}
+                    >
+                      Delete
+                    </Button>
+                    <EditListing
+                      id={listing.id}
+                      onUpdate={handleUpdateListing}
+                    />
+                  </Card.Footer>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <p>No listings available</p>
+        )}
+      </div>
     </div>
   );
 }

@@ -50,15 +50,24 @@ export default function ListingDetail() {
   if (!listing) {
     return <div>Listing not found</div>;
   }
+  const backgroundStyle = {
+    backgroundImage:
+      "linear-gradient(rgba(50, 50, 50, 0.8), rgba(255, 255, 255, 0.8)), url(https://t4.ftcdn.net/jpg/03/65/86/37/240_F_365863785_GPd2tXRRDis66W8NTGYmBt7Bhxfcb09h.jpg)",
+    backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed",
+    minHeight: "100vh",
+    padding: "150px",
+    backgroundSize: "cover",
+  };
 
   return (
     <Container
       fluid
       className="d-flex flex-column vh-100"
-      style={{ width: "100%" }}
+      style={backgroundStyle}
     >
       <Row className="justify-content-center">
-        <Col md={6}>
+        <Col md={6} style={{ border: "3px solid black" }}>
           <img
             src={listing.image_url}
             alt={listing.title}
@@ -69,12 +78,12 @@ export default function ListingDetail() {
       </Row>
       <Row className="mt-4">
         <Col md={6} className="mx-auto">
-          <h1 className="text-center">{listing.title}</h1>
-          <p>{listing.description}</p>
-          <p>${listing.price}</p>
-          <p>{listing.category}</p>
-          <p>{listing.location}</p>
-          <p>{listing.created_at}</p>
+          <h1 style={{ fontSize: "50px" }}>{listing.title}</h1>
+          <p>Condition: {listing.description}</p>
+          <p>Price: ${listing.price}</p>
+          <p>Category: {listing.category}</p>
+          <p>Location: {listing.location}</p>
+          <p>Postes: {listing.created_at}</p>
           <Button onClick={handleChatButtonClick}>Chat with owner</Button>
         </Col>
       </Row>

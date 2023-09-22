@@ -5,6 +5,8 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
 
 function CustomNavbar() {
   const { user, deleteUser } = useUserStore();
@@ -36,53 +38,117 @@ function CustomNavbar() {
   if (!user) {
     return null;
   }
-
   return (
     <div
       style={{
         position: "fixed",
         top: 0,
         left: 0,
-        // width: "100vw",
         width: "100%",
+        zIndex: 1000,
+        borderBottom: "1px solid #333",
       }}
     >
       <Navbar
-        // bg="dark"
-        // variant="dark"
-        // style={{ width: "100vw", height: "10vh" }}
-        // className="justify-content-between"
-
-        bg="dark"
         expand="lg"
         className="bg-body-tertiary"
+        style={{
+          padding: "0 10px",
+          display: "flex",
+          justifyContent: "space-between", // Align items with space between them
+          alignItems: "center", // Vertically center align items
+        }}
       >
         <Navbar.Brand
           href="#home"
-          style={{ fontSize: "35px", marginLeft: "20px" }}
+          style={{
+            fontSize: "35px",
+            fontWeight: "bold",
+            color: "white",
+            marginLeft: "10px",
+          }}
         >
-          BrandName
+          Market Place
         </Navbar.Brand>
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
         <Navbar.Collapse id="basic-navbar-nav">
+          {/* NavLinks */}
           <Nav
             className="me-auto"
             style={{
-              fontSize: "20px",
-              padding: "10px",
+              fontSize: "18px",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            <Nav.Link as={Link} to="/home">
+            <Nav.Link
+              as={Link}
+              to="/home"
+              className="buttons"
+              style={{
+                margin: "0 10px",
+                color: "white", // Initial color set to black
+                textDecoration: "none",
+              }}
+            >
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/chatcomponent">
-              Chats
+            <Nav.Link
+              as={Link}
+              to="/profile"
+              className="buttons"
+              style={{
+                margin: "0 10px",
+                color: "white", // Initial color set to black
+                textDecoration: "none",
+              }}
+            >
+              Profile
             </Nav.Link>
-            <Nav.Link as={Link} to="/profile">
-              Your Profile
+            <Nav.Link
+              as={Link}
+              to="/chatcomponent"
+              className="buttons"
+              style={{
+                margin: "0 10px",
+                color: "white", // Initial color set to black
+                textDecoration: "none",
+              }}
+            >
+              Chat
             </Nav.Link>
           </Nav>
-          <Button variant="outline-light" onClick={handleLogout}>
+
+          {/* Search Bar */}
+          <Form
+            inline
+            style={{ display: "flex", alignItems: "center", width: "500px" }}
+          >
+            {" "}
+            {/* Vertically center align items */}
+            <FormControl
+              type="text"
+              placeholder="Search by category"
+              className="mr-sm-2"
+              style={{ borderRadius: "15px", border: "1px solid #CCC" }}
+            />
+            <Button
+              variant="outline-light"
+              type="submit"
+              style={{ borderRadius: "15px" }}
+            >
+              Search
+            </Button>
+          </Form>
+
+          {/* Logout Button */}
+          <Button
+            variant="outline-light"
+            onClick={handleLogout}
+            style={{ borderRadius: "15px", marginLeft: "10px" }}
+          >
             Logout
           </Button>
         </Navbar.Collapse>

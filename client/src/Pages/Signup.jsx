@@ -57,10 +57,27 @@ export default function Signup() {
         console.log("error", error.message);
       });
   };
+  const backgroundStyle = {
+    backgroundImage:
+      "linear-gradient(rgba(50, 50, 50, 0.8), rgba(255, 255, 255, 0.8)), url(https://t4.ftcdn.net/jpg/03/65/86/37/240_F_365863785_GPd2tXRRDis66W8NTGYmBt7Bhxfcb09h.jpg)",
+    backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed",
+    minHeight: "100vh",
+    padding: "500px",
+    backgroundSize: "cover",
+    color: "white",
+    fontSize: "20px",
+  };
 
   return (
-    <div>
-      <Container style={{ height: "100vh", padding: "20px", width: "100vh" }}>
+    <div style={backgroundStyle}>
+      <Container
+        style={{
+          width: "100vh",
+          position: "relative",
+          height: "100vh",
+        }}
+      >
         <Row className="justify-content-center">
           <Col xs={12} md={8} lg={6}>
             <div className="border p-4 rounded">
@@ -111,7 +128,7 @@ export default function Signup() {
                 </Form.Group>
                 <Form.Group controlId="formBasicUserBio"></Form.Group>
 
-                <Button variant="primary" type="submit" className="m-1 ">
+                <Button variant="secondary" type="submit" className="m-1 ">
                   Sign Up
                 </Button>
                 <Button
