@@ -14,9 +14,7 @@ function ChatComponent() {
   useEffect(() => {
     socket = io.connect("http://127.0.0.1:5555");
 
-    socket.on("message", (message) => {
-      // Handle incoming messages and update state
-    });
+    socket.on("message", (message) => {});
 
     return () => {
       socket.disconnect();
@@ -28,7 +26,6 @@ function ChatComponent() {
       const data = {
         chat_id: currentChat.id,
         sender_id: user.id,
-        // recipient_id: currentChat?.user.id,
         content: messageInput,
       };
 
@@ -38,15 +35,45 @@ function ChatComponent() {
       setMessageInput("");
     }
   };
+  useEffect(() => {
+    if (currentChat && currentChat.id) {
+      fetch(`/api/chats/${currentChat.id}/messages`)
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log(data);
+        })
+        .catch((error) => console.error("Error fetching messages:", error));
+    }
+  }, [currentChat]);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-4">
-          <ChatBoxListComponent />
-        </div>
-        <div className="col-md-8">
-          <ChatsComponent />
+    <div
+      style={{
+        backgroundImage:
+          "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAhoHcRo28FsxHirRt3_nrWEDlJgcoChSejUw_xrbuYvncxomlPFd4ejMOHjC9e8Y4Z84&usqp=CAU)",
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        height: "100vh",
+      }}
+    >
+      <div className="container">
+        <div className="row">
+          <div className="col-md-4">
+            <ChatBoxListComponent />
+          </div>
+          <div className="col-md-8">
+            <ChatsComponent />
+          </div>
+          <div className="messages-container">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`message ${
+                  message.sender_id === user.id ? "sent" : "received"
+                }`}
+              ></div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

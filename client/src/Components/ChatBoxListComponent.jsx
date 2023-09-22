@@ -8,6 +8,7 @@ function ChatBoxListComponent() {
   const setChatBoxes = useUserStore((state) => state.setChatBoxes);
   const setCurrentChat = useUserStore((state) => state.setCurrentChat);
   const setMessages = useUserStore((state) => state.setMessages);
+  const messages = useUserStore((state) => state.messages);
 
   useEffect(() => {
     if (user && user.id) {
@@ -25,10 +26,20 @@ function ChatBoxListComponent() {
   function selectChatBox(chatBox) {
     setCurrentChat(chatBox);
     setMessages(chatBox.messages_field);
+    console.log(chatBox);
   }
 
   return (
-    <div className="list-group mb-3" style={{ marginTop: "170px" }}>
+    <div
+      className="list-group mb-3"
+      style={{
+        marginTop: "180px",
+        maxHeight: "600px",
+        overflowY: "auto",
+
+        minHeight: "500px",
+      }}
+    >
       <h3 style={{ marginLeft: "30px" }}>Inbox</h3>
       {chatBoxes.map((chatBox) => (
         <a

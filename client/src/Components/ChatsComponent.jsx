@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import useUserStore from "../userStore";
 import axios from "axios";
@@ -10,29 +10,42 @@ function ChatsComponent() {
   const user = useUserStore((state) => state.user);
   const addMessage = useUserStore((state) => state.addMessage);
 
-  let socket;
+  const socket = useRef();
 
   useEffect(() => {
-    socket = io("http://localhost:5555");
+    socket.current = io("http://localhost:5555"); // Initialize the socket
 
-    socket.on("receive_message", (message) => {
+    socket.current.on("receive_message", (message) => {
       addMessage((prevMessages) => [...prevMessages, message]);
     });
 
     return () => {
-      socket.disconnect();
+      if (socket.current) {
+        socket.current.disconnect(); // Disconnect the socket when component unmounts
+      }
     };
   }, []);
-
-  if (!currentChat) {
-    return <div>Select a chat to start messaging</div>;
-  }
+  useEffect(() => {
+    if (currentChat && currentChat.id) {
+      axios
+        .get(
+          `http://localhost:5555/chats/${currentChat.id}/messages_with_details`
+        )
+        .then((response) => {
+          addMessage(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching messages with details:", error);
+        });
+    }
+  }, [currentChat, addMessage]);
 
   return (
     <div className="card" style={{ marginTop: "200px" }}>
       <div className="card-header">
         Chat between User {currentChat.user_id_1} and User{" "}
-        {currentChat.user_id_2}
+        {currentChat.user_id_2} and
+        {addMessage.username}
       </div>
       <div
         className="chat-messages-container"
@@ -43,27 +56,33 @@ function ChatsComponent() {
           minHeight: "500px",
         }}
       >
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`d-flex mb-2 ${
-              message.sender_id === user.id
-                ? "justify-content-end"
-                : "justify-content-start"
-            }`}
-          >
-            <div
-              className={`message-content p-2 rounded ${
-                message.sender_id === user.id
-                  ? "bg-primary text-white"
-                  : "bg-light"
-              }`}
-              style={{ marginRight: "20px" }}
-            >
-              <strong>{message.username}</strong> {message.content}
-            </div>
-          </div>
-        ))}
+        {messages &&
+          messages.length > 0 &&
+          messages.map((message, index) => {
+            // console.log(message);
+            if (!message.sender_id) return null; // or some placeholder component
+            return (
+              <div
+                key={index}
+                className={`d-flex mb-2 ${
+                  message.sender_id === user.id
+                    ? "justify-content-end"
+                    : "justify-content-start"
+                }`}
+              >
+                <div
+                  className={`message-content p-2 rounded ${
+                    message.sender_id === user.id
+                      ? "bg-primary text-white"
+                      : "bg-light"
+                  }`}
+                  style={{ marginRight: "20px" }}
+                >
+                  <strong>{message.sender.username}</strong>: {message.content}
+                </div>
+              </div>
+            );
+          })}
       </div>
       <div className="input-group mt-2">
         <input
@@ -104,7 +123,12 @@ function ChatsComponent() {
         addMessage(response.data.message);
         setNewMessage("");
 
-        socket.emit("send_message", response.data.message);
+        // Check if socket is defined before emitting
+        if (socket.current) {
+          socket.current.emit("some_event", messageData);
+        } else {
+          console.error("Socket is not initialized");
+        }
       })
       .catch((error) => {
         console.error("Error sending message:", error);

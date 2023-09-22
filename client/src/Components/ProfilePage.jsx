@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import EditProfile from "../Components/EditProfile";
 import PostListing from "./PostListing";
 import Button from "react-bootstrap/esm/Button";
+import EditListing from "./EditListing";
 
 function ProfilePage() {
   const { user } = useUserStore();
@@ -38,13 +39,33 @@ function ProfilePage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        setUserProfile((prevUserProfile) => {
+          return {
+            ...prevUserProfile,
+            user_listings: prevUserProfile.user_listings.filter(
+              (listing) => listing.id !== id
+            ),
+          };
+        });
+      })
+      .catch((error) => {
+        console.error("Error deleting the listing:", error);
+      });
+  };
+  const handleUpdateListing = (updatedListing) => {
+    setUserProfile((prevUserProfile) => {
+      const updatedListings = prevUserProfile.user_listings.map((listing) =>
+        listing.id === updatedListing.id ? updatedListing : listing
+      );
+      return { ...prevUserProfile, user_listings: updatedListings };
     });
   };
-
-  if (!user || !userProfile || !userData) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="container mt-5">
@@ -90,6 +111,7 @@ function ProfilePage() {
                   >
                     Delete
                   </Button>
+                  <EditListing id={listing.id} onUpdate={handleUpdateListing} />
                 </Card.Footer>
               </Card>
             </Col>

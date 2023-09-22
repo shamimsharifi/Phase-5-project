@@ -399,6 +399,38 @@ class ChatMessages(Resource):
 
 api.add_resource(ChatMessages, '/chats/<int:chat_id>/messages')
 
+class ChatMessagesWithDetails(Resource):
+    def get(self, chat_id):
+        try:
+            # Join Message and User tables to fetch sender's details
+            messages = db.session.query(
+                Message.id,
+                Message.content,
+                Message.created_at,
+                User.username,
+                User.profile_pic
+            ).join(User, User.id == Message.sender_id)\
+            .filter(Message.chat_id == chat_id)\
+            .all()
+            
+            # Convert the results into a list of dictionaries for serialization
+            messages_list = [
+    {
+        "id": message[0],
+        "content": message[1],
+       "created_at": message[2].strftime('%Y-%m-%d %H:%M:%S'),
+        "username": message[3],
+        "profile_pic": message[4]
+    } for message in messages
+]
+            
+            return messages_list, 200
+        except Exception as e:
+            return {"error": str(e)}, 500
+
+api.add_resource(ChatMessagesWithDetails, '/chats/<int:chat_id>/messages_with_details')
+
+
 
 
 class Messages(Resource):
@@ -519,18 +551,6 @@ class Logout(Resource):
         return {'message':'204: No Content'}
 api.add_resource(Logout, '/logout')
 
-# @socketio.on('message')
-# def handle_message(data):
-#     print('Received message:', data)
-
-
-
-#     new_message = Message(content=data['content'], chat_id=data['chat_id'], sender_id=data['sender_id'])
-
-#     db.session.add(new_message)
-#     db.session.commit()
-
-#     socketio.emit('message', data)
 
 @socketio.on('new_message')
 def handle_new_message(data):
