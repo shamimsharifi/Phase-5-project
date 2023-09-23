@@ -18,7 +18,15 @@ export default function GettingStarted() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage:
+          "url(https://seeklogo.com/images/M/marketplace-facebook-logo-BC79D3F4C3-seeklogo.com.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        height: "100vh",
+      }}
+    >
       <Button variant="primary" onClick={handleNavigateToLogin} className="m-1">
         Let's get started
       </Button>

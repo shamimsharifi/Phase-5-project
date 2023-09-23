@@ -13,7 +13,7 @@ function ChatsComponent() {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("http://localhost:5555"); // Initialize the socket
+    socket.current = io("http://localhost:5555");
 
     socket.current.on("receive_message", (message) => {
       addMessage((prevMessages) => [...prevMessages, message]);
@@ -21,7 +21,7 @@ function ChatsComponent() {
 
     return () => {
       if (socket.current) {
-        socket.current.disconnect(); // Disconnect the socket when component unmounts
+        socket.current.disconnect();
       }
     };
   }, []);
@@ -60,7 +60,7 @@ function ChatsComponent() {
           messages.length > 0 &&
           messages.map((message, index) => {
             // console.log(message);
-            if (!message.sender_id) return null; // or some placeholder component
+            if (!message.sender_id) return null;
             return (
               <div
                 key={index}
@@ -123,7 +123,6 @@ function ChatsComponent() {
         addMessage(response.data.message);
         setNewMessage("");
 
-        // Check if socket is defined before emitting
         if (socket.current) {
           socket.current.emit("some_event", messageData);
         } else {

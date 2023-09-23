@@ -31,7 +31,6 @@ function ChatComponent() {
 
       socket.emit("message", data);
 
-      // Clear the message input field
       setMessageInput("");
     }
   };

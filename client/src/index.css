@@ -4,7 +4,7 @@ body {
 }
 .buttons:hover {
   background: #e3e6de;
-  /* border-radius: 10px; */
+
   color: rgb(10, 4, 4) !important;
 }
 

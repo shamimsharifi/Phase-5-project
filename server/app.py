@@ -350,32 +350,6 @@ def send_message():
     return jsonify(message=new_message.to_dict()), 201
 
 
-# from flask import request, jsonify
-# from flask_restful import Resource
-
-# class CreateChat(Resource):
-#     def post(self):
-#         data = request.get_json()
-#         user_id_1 = data.get('user_id_1')
-#         user_id_2 = data.get('user_id_2')
-
-        
-#         existing_chat = Chat.query.filter(or_(
-#             (Chat.user_id_1 == user_id_1) & (Chat.user_id_2 == user_id_2),
-#             (Chat.user_id_1 == user_id_2) & (Chat.user_id_2 == user_id_1)
-#         )).first()
-
-#         if existing_chat:
-#             return {'message': 'Chat already exists', 'chat_id': existing_chat.id}, 200
-
-#         new_chat = Chat(user_id_1=user_id_1, user_id_2=user_id_2)
-#         db.session.add(new_chat)
-#         db.session.commit()
-
-#         return {'message': 'Chat created successfully', 'chat_id': new_chat.id}, 201
-
-
-# api.add_resource(CreateChat, '/create-chat')
 
 class UserChats(Resource):
     def get(self, user_id):
@@ -585,14 +559,14 @@ def handle_send_message(data):
     content = data['content']
     sender_id = data['sender_id']
 
-    # Create a new message object
+ 
     message = Message(chat_id=chat_id, content=content, sender_id=sender_id)
 
-    # Add the message to the database
+    
     db.session.add(message)
     db.session.commit()
 
-    # Emit the message to other clients
+ 
     socketio.emit('receive_message', data)
 
 

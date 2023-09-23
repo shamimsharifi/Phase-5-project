@@ -55,8 +55,8 @@ function CustomNavbar() {
         style={{
           padding: "0 10px",
           display: "flex",
-          justifyContent: "space-between", // Align items with space between them
-          alignItems: "center", // Vertically center align items
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <Navbar.Brand
@@ -89,7 +89,7 @@ function CustomNavbar() {
               className="buttons"
               style={{
                 margin: "0 10px",
-                color: "white", // Initial color set to black
+                color: "white",
                 textDecoration: "none",
               }}
             >
@@ -101,7 +101,7 @@ function CustomNavbar() {
               className="buttons"
               style={{
                 margin: "0 10px",
-                color: "white", // Initial color set to black
+                color: "white",
                 textDecoration: "none",
               }}
             >
@@ -113,7 +113,7 @@ function CustomNavbar() {
               className="buttons"
               style={{
                 margin: "0 10px",
-                color: "white", // Initial color set to black
+                color: "white",
                 textDecoration: "none",
               }}
             >
@@ -121,13 +121,11 @@ function CustomNavbar() {
             </Nav.Link>
           </Nav>
 
-          {/* Search Bar */}
           <Form
             inline
             style={{ display: "flex", alignItems: "center", width: "500px" }}
           >
             {" "}
-            {/* Vertically center align items */}
             <FormControl
               type="text"
               placeholder="Search by category"
@@ -143,7 +141,6 @@ function CustomNavbar() {
             </Button>
           </Form>
 
-          {/* Logout Button */}
           <Button
             variant="outline-light"
             onClick={handleLogout}
